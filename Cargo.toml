@@ -1,0 +1,15 @@
+[package]
+name = "mpfr-sys"
+version = "0.0.1"
+authors = ["Vladimir Matveev <vladimir.matweev@gmail.com>"]
+links = "mpfr"
+build = "build.rs"
+description = "libmpfr low-level bindings"
+license = "LGPL-3.0"  # Because libmpfr is LGPL-3.0 and it is distributed in this package
+
+[lib]
+name = "mpfr-sys"
+path = "lib.rs"
+
+[dependencies.gmp-sys]
+version = "*"
