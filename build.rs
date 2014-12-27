@@ -1,5 +1,3 @@
-#![feature(if_let)]
-
 use std::os;
 use std::io::{mod, fs, Command, BufReader};
 use std::io::process::InheritFd;
@@ -11,20 +9,20 @@ const MPFR_VERSION: &'static str = "3.1.2";
 #[cfg(unix)]
 fn check_library(name: &str) -> bool {
     // First check whether ldconfig utility is available (if we're on linux)
-    if let Ok(po) = Command::new("ldcoig").arg("-p").output() {
+    if let Ok(po) = Command::new("ldconfig").arg("-p").output() {
         let target = os::getenv("TARGET").unwrap();
         let is_64bit = target.contains("x86_64");
+        let pattern = format!("{}.so (libc6{})", name, if is_64bit { ",x86-64" } else { "" });
         if po.output.len() > 0 {
             let mut br = BufReader::new(&*po.output);
             return br.lines().map(|l| l.unwrap())
-                .any(|l| l.contains(name) && if is_64bit { l.contains("x86-64") }
-                                             else { true })
+                .any(|l| l.contains(&*pattern))
         }
     }
 
     // If it fails, then check common system libraries directories
     for &dir in ["/lib", "/usr/lib", "/usr/local/lib"].iter() {
-        let p = Path::new(dir).join(format!("{}.so", MPFR_NAME));
+        let p = Path::new(dir).join(format!("{}.so", name));
         if p.exists() { return true; }
     }
 
@@ -81,7 +79,7 @@ fn run_build(mpfr_src_root: &Path,
 
     let mut ldflags = os::getenv("LDFLAGS").unwrap_or(String::new());
     if let Some(gmp_libdir) = os::getenv("DEP_GMP_LIBDIR") {
-        ldflags.push_str("-L");
+        ldflags.push_str(" -L");
         ldflags.push_str(&*gmp_libdir);
     }
 
@@ -96,7 +94,7 @@ fn run_build(mpfr_src_root: &Path,
         cflags.push_str(" -fPIC");
     }    
     if let Some(gmp_include) = os::getenv("DEP_GMP_INCLUDE") {
-        cflags.push_str("-I");
+        cflags.push_str(" -I");
         cflags.push_str(&*gmp_include);
     }
 
@@ -108,7 +106,7 @@ fn run_build(mpfr_src_root: &Path,
     fs::mkdir(mpfr_build_dir, io::USER_DIR).unwrap();
 
     let config_opts = vec![
-        "--enable-shared=no".into_string() // TODO: why?
+        "--enable-shared=no".to_string() // TODO: why?
     ];
 
     // Run configure
@@ -138,8 +136,8 @@ fn run_build(mpfr_src_root: &Path,
     }
     
     // Copy the single include file
-    fs::copy(&mpfr_build_dir.join("src/mpfr.h"), &mpfr_out_include_dir.join("mpfr.h")).unwrap();
-    fs::copy(&mpfr_build_dir.join("src/mpf2mpfr.h"), &mpfr_out_include_dir.join("mpf2mpfr.h")).unwrap();
+    fs::copy(&mpfr_src_root.join("src/mpfr.h"), &mpfr_out_include_dir.join("mpfr.h")).unwrap();
+    fs::copy(&mpfr_src_root.join("src/mpf2mpfr.h"), &mpfr_out_include_dir.join("mpf2mpfr.h")).unwrap();
 }
 
 fn emit_cargo_config(lib_dir: &Path, include_dir: &Path) {
