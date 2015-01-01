@@ -35,8 +35,11 @@ pub struct Struct_Unnamed2 {
     pub _mpfr_exp: mpfr_exp_t,
     pub _mpfr_d: *mut mp_limb_t,
 }
+impl ::std::default::Default for Struct_Unnamed2 {
+    fn default() -> Struct_Unnamed2 { unsafe { ::std::mem::zeroed() } }
+}
 pub type __mpfr_struct = Struct_Unnamed2;
-pub type mpfr_t = [__mpfr_struct, ..1u];
+pub type mpfr_t = [__mpfr_struct; 1u];
 pub type mpfr_ptr = *mut __mpfr_struct;
 pub type mpfr_srcptr = *const __mpfr_struct;
 pub type Enum_Unnamed3 = ::libc::c_uint;
@@ -45,7 +48,6 @@ pub const MPFR_INF_KIND: ::libc::c_uint = 1;
 pub const MPFR_ZERO_KIND: ::libc::c_uint = 2;
 pub const MPFR_REGULAR_KIND: ::libc::c_uint = 3;
 pub type mpfr_kind_t = Enum_Unnamed3;
-extern "C" { }
 extern "C" {
     pub fn mpfr_get_version() -> *const ::libc::c_char;
     pub fn mpfr_get_patches() -> *const ::libc::c_char;
@@ -532,4 +534,16 @@ extern "C" {
                                 arg3: mpfr_exp_t, arg4: mpfr_prec_t,
                                 arg5: *mut ::libc::c_void);
     pub fn mpfr_custom_get_kind(arg1: mpfr_srcptr) -> ::libc::c_int;
+    pub fn __gmpfr_set_sj(arg1: mpfr_t, arg2: intmax_t, arg3: mpfr_rnd_t)
+     -> ::libc::c_int;
+    pub fn __gmpfr_set_sj_2exp(arg1: mpfr_t, arg2: intmax_t, arg3: intmax_t,
+                               arg4: mpfr_rnd_t) -> ::libc::c_int;
+    pub fn __gmpfr_set_uj(arg1: mpfr_t, arg2: uintmax_t, arg3: mpfr_rnd_t)
+     -> ::libc::c_int;
+    pub fn __gmpfr_set_uj_2exp(arg1: mpfr_t, arg2: uintmax_t, arg3: intmax_t,
+                               arg4: mpfr_rnd_t) -> ::libc::c_int;
+    pub fn __gmpfr_mpfr_get_sj(arg1: mpfr_srcptr, arg2: mpfr_rnd_t)
+     -> intmax_t;
+    pub fn __gmpfr_mpfr_get_uj(arg1: mpfr_srcptr, arg2: mpfr_rnd_t)
+     -> uintmax_t;
 }
