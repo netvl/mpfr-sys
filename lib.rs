@@ -28,7 +28,7 @@ pub type mpfr_sign_t = ::libc::c_int;
 pub type mpfr_exp_t = ::libc::c_long;
 pub type mpfr_uexp_t = ::libc::c_ulong;
 #[repr(C)]
-#[deriving(Copy)]
+#[derive(Copy)]
 pub struct Struct_Unnamed2 {
     pub _mpfr_prec: mpfr_prec_t,
     pub _mpfr_sign: mpfr_sign_t,
