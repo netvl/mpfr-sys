@@ -534,13 +534,13 @@ extern "C" {
                                 arg3: mpfr_exp_t, arg4: mpfr_prec_t,
                                 arg5: *mut ::libc::c_void);
     pub fn mpfr_custom_get_kind(arg1: mpfr_srcptr) -> ::libc::c_int;
-    pub fn __gmpfr_set_sj(arg1: mpfr_t, arg2: intmax_t, arg3: mpfr_rnd_t)
+    pub fn __gmpfr_set_sj(arg1: mpfr_ptr, arg2: intmax_t, arg3: mpfr_rnd_t)
      -> ::libc::c_int;
-    pub fn __gmpfr_set_sj_2exp(arg1: mpfr_t, arg2: intmax_t, arg3: intmax_t,
+    pub fn __gmpfr_set_sj_2exp(arg1: mpfr_ptr, arg2: intmax_t, arg3: intmax_t,
                                arg4: mpfr_rnd_t) -> ::libc::c_int;
-    pub fn __gmpfr_set_uj(arg1: mpfr_t, arg2: uintmax_t, arg3: mpfr_rnd_t)
+    pub fn __gmpfr_set_uj(arg1: mpfr_ptr, arg2: uintmax_t, arg3: mpfr_rnd_t)
      -> ::libc::c_int;
-    pub fn __gmpfr_set_uj_2exp(arg1: mpfr_t, arg2: uintmax_t, arg3: intmax_t,
+    pub fn __gmpfr_set_uj_2exp(arg1: mpfr_ptr, arg2: uintmax_t, arg3: intmax_t,
                                arg4: mpfr_rnd_t) -> ::libc::c_int;
     pub fn __gmpfr_mpfr_get_sj(arg1: mpfr_srcptr, arg2: mpfr_rnd_t)
      -> intmax_t;
