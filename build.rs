@@ -39,7 +39,10 @@ fn check_library(name: &str) -> bool {
 fn main() {
     // MPFR does not support pkg-config :(
     // Try to guess its presence manually
-    if check_library(MPFR_NAME) { return; }
+    if check_library(MPFR_NAME) {
+        println!("cargo:rustc-flags=-l mpfr");
+        return;
+    }
 
     // Bind some useful paths
 
