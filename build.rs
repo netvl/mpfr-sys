@@ -160,16 +160,16 @@ fn run(cmd: &mut Command) {
 }
 
 trait Tap {
-    fn tap(self, f: |Self| -> Self) -> Self;
-    fn tap_mut(&mut self, f: |&mut Self|) -> &mut Self;
+    fn tap<F>(self, f: F) -> Self where F: FnOnce(Self) -> Self;
+    fn tap_mut<F>(&mut self, f: F) -> &mut Self where F: FnOnce(&mut Self);
 }
 
 impl<T> Tap for T {
     #[inline]
-    fn tap(self, f: |T| -> T) -> T { f(self) }
+    fn tap<F>(self, f: F) -> T where F: FnOnce(T) -> T { f(self) }
 
     #[inline]
-    fn tap_mut(&mut self, f: |&mut T|) -> &mut T {
+    fn tap_mut<F>(&mut self, f: F) -> &mut T where F: FnOnce(&mut T) {
         f(self);
         self
     }
