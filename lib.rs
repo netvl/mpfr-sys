@@ -1,4 +1,4 @@
-#![allow(non_camel_case_types, raw_pointer_deriving)]
+#![allow(non_camel_case_types, raw_pointer_derive, unstable)]
 
 extern crate libc;
 extern crate "gmp-sys" as gmp;
@@ -39,7 +39,7 @@ impl ::std::default::Default for Struct_Unnamed2 {
     fn default() -> Struct_Unnamed2 { unsafe { ::std::mem::zeroed() } }
 }
 pub type __mpfr_struct = Struct_Unnamed2;
-pub type mpfr_t = [__mpfr_struct; 1u];
+pub type mpfr_t = [__mpfr_struct; 1us];
 pub type mpfr_ptr = *mut __mpfr_struct;
 pub type mpfr_srcptr = *const __mpfr_struct;
 pub type Enum_Unnamed3 = ::libc::c_uint;
